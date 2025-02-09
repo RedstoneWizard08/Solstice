@@ -4,7 +4,7 @@ import me.alexdevs.solstice.api.module.ModuleBase;
 import me.alexdevs.solstice.api.module.ModuleEntrypoint;
 import me.alexdevs.solstice.modules.admin.AdminModule;
 import me.alexdevs.solstice.modules.afk.AfkModule;
-import me.alexdevs.solstice.modules.autoAnnouncement.AutoAnnouncementModule;
+import me.alexdevs.solstice.modules.announcement.AnnouncementModule;
 import me.alexdevs.solstice.modules.item.ItemModule;
 import me.alexdevs.solstice.modules.jail.JailModule;
 import me.alexdevs.solstice.modules.kit.KitModule;
@@ -64,7 +64,7 @@ public class ModuleProvider implements ModuleEntrypoint {
     private static final List<? extends ModuleBase> modules = List.of(
             new AdminModule(),
             new AfkModule(),
-            new AutoAnnouncementModule(),
+            new AnnouncementModule(),
             new RestartModule(),
             new BackModule(),
             new BanModule(),
