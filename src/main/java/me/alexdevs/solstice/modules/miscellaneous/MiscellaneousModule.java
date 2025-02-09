@@ -4,6 +4,7 @@ import me.alexdevs.solstice.Solstice;
 import me.alexdevs.solstice.api.module.ModuleBase;
 import me.alexdevs.solstice.modules.miscellaneous.commands.*;
 import me.alexdevs.solstice.modules.miscellaneous.data.MiscellaneousLocale;
+import me.alexdevs.solstice.modules.miscellaneous.data.MiscellaneousPlayerData;
 import net.fabricmc.fabric.api.entity.event.v1.EntitySleepEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 import net.minecraft.entity.LivingEntity;
@@ -26,15 +27,39 @@ public class MiscellaneousModule extends ModuleBase.Toggleable {
     @Override
     public void init() {
         Solstice.localeManager.registerModule(ID, MiscellaneousLocale.MODULE);
+        Solstice.playerData.registerData(ID, MiscellaneousPlayerData.class, MiscellaneousPlayerData::new);
 
         commands.add(new EffectsCommand(this));
         commands.add(new SleepCommand(this));
         commands.add(new NudgeCommand(this));
         commands.add(new TopCommand(this));
+        commands.add(new ExtinguishCommand(this));
+        commands.add(new IgniteCommand(this));
+        commands.add(new FeedCommand(this));
+        commands.add(new FlyCommand(this));
+        commands.add(new GodCommand(this));
+        commands.add(new HealCommand(this));
         //commands.add(new KittyCannonCommand(this));
         //commands.add(new RocketCommand(this));
 
-        ServerPlayConnectionEvents.JOIN.register((handler, sender, server) -> commandSleeping.remove(handler.getPlayer().getUuid()));
+        ServerPlayConnectionEvents.JOIN.register((handler, sender, server) -> {
+            var player = handler.getPlayer();
+
+            commandSleeping.remove(player.getUuid());
+
+            var data = Solstice.playerData.get(player).getData(MiscellaneousPlayerData.class);
+            var abilities = player.getAbilities();
+            if (data.flightEnabled) {
+                abilities.allowFlying = true;
+            }
+            if (data.invulnerabilityEnabled) {
+                abilities.invulnerable = true;
+            }
+
+            player.sendAbilitiesUpdate();
+
+
+        });
         EntitySleepEvents.STOP_SLEEPING.register((entity, pos) -> commandSleeping.remove(entity.getUuid()));
 
         EntitySleepEvents.ALLOW_SLEEP_TIME.register((player, pos, vanillaResult) -> {

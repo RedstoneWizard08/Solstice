@@ -21,17 +21,11 @@ import me.alexdevs.solstice.modules.commandSpy.CommandSpyModule;
 import me.alexdevs.solstice.modules.customName.CustomNameModule;
 import me.alexdevs.solstice.modules.enderchest.EnderChestModule;
 import me.alexdevs.solstice.modules.experiments.ExperimentsModule;
-import me.alexdevs.solstice.modules.extinguish.ExtinguishModule;
-import me.alexdevs.solstice.modules.feed.FeedModule;
-import me.alexdevs.solstice.modules.fly.FlyModule;
 import me.alexdevs.solstice.modules.rtp.RTPModule;
 import me.alexdevs.solstice.modules.sign.SignModule;
-import me.alexdevs.solstice.modules.god.GodModule;
 import me.alexdevs.solstice.modules.hat.HatModule;
-import me.alexdevs.solstice.modules.heal.HealModule;
 import me.alexdevs.solstice.modules.helpOp.HelpOpModule;
 import me.alexdevs.solstice.modules.home.HomeModule;
-import me.alexdevs.solstice.modules.ignite.IgniteModule;
 import me.alexdevs.solstice.modules.ignore.IgnoreModule;
 import me.alexdevs.solstice.modules.info.InfoModule;
 import me.alexdevs.solstice.modules.inventorySee.InventorySeeModule;
@@ -73,16 +67,10 @@ public class ModuleProvider implements ModuleEntrypoint {
             new CustomNameModule(),
             new EnderChestModule(),
             new ExperimentsModule(),
-            new ExtinguishModule(),
-            new FeedModule(),
-            new FlyModule(),
             new SignModule(),
-            new GodModule(),
             new HatModule(),
-            new HealModule(),
             new HelpOpModule(),
             new HomeModule(),
-            new IgniteModule(),
             new IgnoreModule(),
             new InfoModule(),
             new InventorySeeModule(),

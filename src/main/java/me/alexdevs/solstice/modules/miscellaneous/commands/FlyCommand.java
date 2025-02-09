@@ -1,4 +1,4 @@
-package me.alexdevs.solstice.modules.god.commands;
+package me.alexdevs.solstice.modules.miscellaneous.commands;
 
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
@@ -6,8 +6,8 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import eu.pb4.placeholders.api.PlaceholderContext;
 import me.alexdevs.solstice.Solstice;
 import me.alexdevs.solstice.api.module.ModCommand;
-import me.alexdevs.solstice.modules.god.GodModule;
-import me.alexdevs.solstice.modules.god.data.GodPlayerData;
+import me.alexdevs.solstice.modules.miscellaneous.MiscellaneousModule;
+import me.alexdevs.solstice.modules.miscellaneous.data.MiscellaneousPlayerData;
 import net.minecraft.command.argument.EntityArgumentType;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -17,26 +17,27 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 import java.util.Map;
 
+import static me.alexdevs.solstice.locale.LocaleStyle.value;
 import static net.minecraft.server.command.CommandManager.argument;
 import static net.minecraft.server.command.CommandManager.literal;
 
-public class GodCommand extends ModCommand<GodModule> {
-    public GodCommand(GodModule module) {
+public class FlyCommand extends ModCommand<MiscellaneousModule> {
+    public FlyCommand(MiscellaneousModule module) {
         super(module);
     }
 
     @Override
     public List<String> getNames() {
-        return List.of("god");
+        return List.of("fly");
     }
 
     @Override
     public LiteralArgumentBuilder<ServerCommandSource> command(String name) {
         return literal(name)
-                .requires(require(3))
+                .requires(require("fly", 3))
                 .executes(context -> execute(context, null))
                 .then(argument("player", EntityArgumentType.player())
-                        .requires(require("others", 3))
+                        .requires(require("fly.others", 3))
                         .executes(context -> execute(context, EntityArgumentType.getPlayer(context, "player")))
                 );
     }
@@ -48,29 +49,29 @@ public class GodCommand extends ModCommand<GodModule> {
         }
 
         var abilities = player.getAbilities();
-        abilities.invulnerable = !abilities.invulnerable;
+        abilities.allowFlying = !abilities.allowFlying;
         player.sendAbilitiesUpdate();
 
-        var data = Solstice.playerData.get(player).getData(GodPlayerData.class);
-        data.invulnerabilityEnabled = abilities.invulnerable;
+        var data = Solstice.playerData.get(player).getData(MiscellaneousPlayerData.class);
+        data.flightEnabled = abilities.allowFlying;
 
         Text text;
         var sourceContext = PlaceholderContext.of(context.getSource());
         if (forOther) {
             var placeholders = Map.of(
-                    "player", player.getDisplayName()
+                    "player", value(player.getName())
             );
 
-            if (abilities.invulnerable) {
-                text = module.locale().get("enabledForOther", sourceContext, placeholders);
+            if (abilities.allowFlying) {
+                text = module.locale().get("flightEnabledForOther", sourceContext, placeholders);
             } else {
-                text = module.locale().get("disabledForOther", sourceContext, placeholders);
+                text = module.locale().get("flightDisabledForOther", sourceContext, placeholders);
             }
         } else {
-            if (abilities.invulnerable) {
-                text = module.locale().get("enabled", sourceContext);
+            if (abilities.allowFlying) {
+                text = module.locale().get("flightEnabled", sourceContext);
             } else {
-                text = module.locale().get("disabled", sourceContext);
+                text = module.locale().get("flightDisabled", sourceContext);
             }
         }
 

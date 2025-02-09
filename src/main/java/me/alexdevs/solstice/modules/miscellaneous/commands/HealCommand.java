@@ -1,10 +1,10 @@
-package me.alexdevs.solstice.modules.heal.commands;
+package me.alexdevs.solstice.modules.miscellaneous.commands;
 
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import me.alexdevs.solstice.api.module.ModCommand;
-import me.alexdevs.solstice.modules.heal.HealModule;
+import me.alexdevs.solstice.modules.miscellaneous.MiscellaneousModule;
 import net.minecraft.command.argument.EntityArgumentType;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
@@ -18,8 +18,8 @@ import java.util.List;
 import static net.minecraft.server.command.CommandManager.argument;
 import static net.minecraft.server.command.CommandManager.literal;
 
-public class HealCommand extends ModCommand<HealModule> {
-    public HealCommand(HealModule module) {
+public class HealCommand extends ModCommand<MiscellaneousModule> {
+    public HealCommand(MiscellaneousModule module) {
         super(module);
     }
 
@@ -31,10 +31,10 @@ public class HealCommand extends ModCommand<HealModule> {
     @Override
     public LiteralArgumentBuilder<ServerCommandSource> command(String name) {
         return literal(name)
-                .requires(require(2))
+                .requires(require("heal", 2))
                 .executes(context -> execute(context, null))
                 .then(argument("targets", EntityArgumentType.entities())
-                        .requires(require("others", 2))
+                        .requires(require("heal.others", 2))
                         .executes(context -> execute(context, EntityArgumentType.getEntities(context, "targets"))));
     }
 

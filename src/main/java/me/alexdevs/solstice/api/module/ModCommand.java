@@ -3,6 +3,7 @@ package me.alexdevs.solstice.api.module;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.tree.LiteralCommandNode;
+import me.alexdevs.solstice.locale.Locale;
 import me.lucko.fabric.api.permissions.v0.Permissions;
 import net.minecraft.command.CommandRegistryAccess;
 import net.minecraft.server.command.CommandManager;
@@ -85,6 +86,10 @@ public abstract class ModCommand<T extends ModuleBase> {
 
     public Predicate<ServerCommandSource> require(String subNode, boolean defaultValue) {
         return Permissions.require(getPermissionNode(subNode), defaultValue);
+    }
+
+    public Locale locale() {
+        return module.locale();
     }
 
     /**

@@ -1,11 +1,11 @@
-package me.alexdevs.solstice.modules.ignite.commands;
+package me.alexdevs.solstice.modules.miscellaneous.commands;
 
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import me.alexdevs.solstice.api.module.ModCommand;
-import me.alexdevs.solstice.modules.ignite.IgniteModule;
+import me.alexdevs.solstice.modules.miscellaneous.MiscellaneousModule;
 import net.minecraft.command.argument.EntityArgumentType;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -18,10 +18,10 @@ import java.util.List;
 import static net.minecraft.server.command.CommandManager.argument;
 import static net.minecraft.server.command.CommandManager.literal;
 
-public class IgniteCommand extends ModCommand<IgniteModule> {
+public class IgniteCommand extends ModCommand<MiscellaneousModule> {
     public static final int defaultTicks = 200; // 10 seconds
 
-    public IgniteCommand(IgniteModule module) {
+    public IgniteCommand(MiscellaneousModule module) {
         super(module);
     }
 
@@ -32,7 +32,7 @@ public class IgniteCommand extends ModCommand<IgniteModule> {
 
     public LiteralArgumentBuilder<ServerCommandSource> command(String command) {
         return literal(command)
-                .requires(require(2))
+                .requires(require("ignite.base", 2))
                 .executes(context -> execute(context, null, null))
                 .then(argument("players", EntityArgumentType.players())
                         .executes(context -> execute(context, EntityArgumentType.getPlayers(context, "players"), null))
